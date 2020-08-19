@@ -33,6 +33,6 @@ MaxClientCircuitsPending 48
 UseEntryGuards 1
 EnforceDistinctSubnets 1
 
-EntryNodes {au}
+EntryNodes {ch}
 ExcludeNodes {ru},{by},{cn},{ge},{kg},{kz},{tj},{tm},{ua},{uz},{am}
 
