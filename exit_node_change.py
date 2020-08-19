@@ -12,3 +12,4 @@ with open(file2) as r:
 
 with open(file1, "w") as f_r:
     f_r.write(a + i + "\n")
+
