@@ -1,3 +1,5 @@
+# Run this script using 'sudo'
+
 import os 
 
 file1 = "/etc/tor/torrc" 
