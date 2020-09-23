@@ -1,11 +1,10 @@
 import os 
 
 file1 = "/etc/tor/torrc" 
-file2 = "/path_to_your/torrc"
-find = "ExitNodes"
+file2 = "torrc"
 
 user_input = input("Enter exit node country code: ")
-i = find + " {" + user_input + "}\n"
+i = "ExitNodes {" + user_input + "}\n"
 
 with open(file2) as r:
     a = r.read()

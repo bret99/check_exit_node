@@ -1,21 +1,21 @@
 #!/bin/bash
 
-function notify {
+notify (){
 	if [ -e /usr/bin/notify-send ]; then
 		/usr/bin/notify-send "Network message" "$1"
 	fi
 }
 export notify
 
-function notify2 {
+notify2 (){
 	if [ -e /usr/bin/notify-send ]; then
 		/usr/bin/notify-send "$1" "$3" -t 5000 -i "$2"
 	fi
 }
 export notify2
 
-function checkIP {
-	DATA=`curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/`
+checkIP (){
+	DATA='curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/'
         IP=$(curl ifconfig.me)
         countryToFind=`whois $IP|grep ountry|sed 's/country://; s/Country://'|head -n 1`                                                          
         flagToFind=`echo $countryToFind|sed -e 's/\(.*\)/\L\1/'`   
@@ -37,3 +37,4 @@ function checkIP {
 	fi
 }
 
+checkIP

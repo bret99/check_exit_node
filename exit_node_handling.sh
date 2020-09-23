@@ -20,7 +20,7 @@ function notify2 {
 export notify2
 
 function kill-apps {
-	echo -e -n "$BLUE[$GREEN*$BLUE] killing dangerous applications\n"
+	echo -e -n "$BLUE[$GREEN*$BLUE] Killing dangerous applications\n"
 	sudo killall -q chrome dropbox skype icedove thunderbird firefox firefox-esr chromium xchat hexchat transmission steam firejail
 	echo -e -n "$BLUE[$GREEN*$BLUE] Dangerous applications killed\n"
 
@@ -57,7 +57,7 @@ function checkIP {
 function checkuid {
 	ME=$(whoami | tr [:lower:] [:upper:])
 	if [ $(id -u) -ne 0 ]; then
-		echo -e "\n$GREEN[$RED!$GREEN] $RED $ME R U DRUNK?? This script must be run as root$RESETCOLOR\n" >&2
+		echo -e "\n$GREEN[$RED!$GREEN] $RED $ME This script should be run as root$RESETCOLOR\n" >&2
 		exit 1
 	fi
 }
@@ -65,11 +65,9 @@ function checkuid {
 
 function start {
 	echo -e "\n$GREEN[$BLUE i$GREEN ]$BLUE Starting anonymous mode:$RESETCOLOR\n"
-	echo -e "$GREEN *$BLUE Generating AnonSurf session"
 	/usr/sbin/service anonsurfd start
 	echo -e "$GREEN *$BLUE Starting tor service"
-	echo -e "$GREEN *$BLUE All traffic was redirected throught Tor\n"
-	echo -e "$GREEN[$BLUE i$GREEN ]$BLUE You are under AnonSurf tunnel$RESETCOLOR\n"
+	echo -e "$GREEN *$BLUE All traffic is redirected throught Tor\n"
 	sleep 1.5
 }
 
@@ -84,19 +82,19 @@ function stop {
 
 function status-boot {
 	if [ -f /etc/systemd/system/default.target.wants/anonsurfd.service ]; then
-		echo -e "\n$GREEN[$RED!$GREEN] $RED AnonSurf is$GREEN enabled$RED!$RESETCOLOR\n"
+		echo -e "\n$GREEN[$RED!$GREEN] $RED Anonymous mode is$GREEN enabled$RED!$RESETCOLOR\n"
 	else
-		echo -e "\n$GREEN[$RED!$GREEN] $RED AnonSurf is disabled!$RESETCOLOR\n"
+		echo -e "\n$GREEN[$RED!$GREEN] $RED Anonymous is mode disabled!$RESETCOLOR\n"
 	fi
 }
 
 
 function enable-boot {
 	if [ -f /etc/systemd/system/default.target.wants/anonsurfd.service ]; then
-		echo -e "\n$GREEN[$RED!$GREEN] $RED AnonSurf already enabled!$RESETCOLOR\n"
+		echo -e "\n$GREEN[$RED!$GREEN] $RED Anoymous mode is already enabled!$RESETCOLOR\n"
 	else
 		/usr/bin/systemctl enable anonsurfd;
-		notify "Enabling AnonSurf at boot"
+		notify "Enabling anonymous mode at boot"
 	fi
 }
 
@@ -104,15 +102,15 @@ function enable-boot {
 function disable-boot {
 	if [ -f /etc/systemd/system/default.target.wants/anonsurfd.service ]; then
 		/usr/bin/systemctl disable anonsurfd;
-		notify "Disabling AnonSurf at boot"
+		notify "Disabling anonymous mode at boot"
 	else
-		echo -e "\n$GREEN[$RED!$GREEN] $RED AnonSurf wasn't enabled. Nothing to disable!$RESETCOLOR\n"
+		echo -e "\n$GREEN[$RED!$GREEN] $RED Anonymous mode wasn't enabled. Nothing to disable!$RESETCOLOR\n"
 	fi
 }
 
 
 function change {
-    sudo python3 /home/desktop/my_opt/exit_node_change.py 
+    sudo python3 exit_node_change.py 
     sudo service tor restart
 }
 
@@ -136,21 +134,21 @@ case "$1" in
 	start)
 		checkuid
 		if [ "$(systemctl is-active anonsurfd)" = "inactive" ]; then
-			zenity --question --text="Do you want AnonSurf to kill dangerous applications and clean some application caches?" --width 400 && kill-apps
+			zenity --question --text="Do you want to kill dangerous applications and clean some application caches?" --width 400 && kill-apps
 			start
 		else
 			# TODO check "failed" service here
-			echo -e "\n$GREEN[$RED!$GREEN] $RED AnonSurf is running! Can't start service!$RESETCOLOR\n" >&2
+			echo -e "\n$GREEN[$RED!$GREEN] $RED Anonymous mode is running! Can't start service!$RESETCOLOR\n" >&2
 		fi
 	;;
 	
 	stop)
 		checkuid
 		if [ "$(systemctl is-active anonsurfd)" = "active" ]; then
-			zenity --question --text="Do you want AnonSurf to kill dangerous applications and clean some application caches?" --width 400 && kill-apps
+			zenity --question --text="Do you want to kill dangerous applications and clean some application caches?" --width 400 && kill-apps
 			stop
 		else
-			echo -e "\n$GREEN[$RED!$GREEN] $RED AnonSurf is not running! Can't stop service!$RESETCOLOR\n" >&2
+			echo -e "\n$GREEN[$RED!$GREEN] $RED Anonymous mode is not running! Can't stop service!$RESETCOLOR\n" >&2
 		fi
 	;;
 	changeid|change-id|change)
@@ -160,7 +158,7 @@ case "$1" in
 		if [ "$(service anonsurfd status | grep Active | awk '{print $2}')" = "active" ]; then
 			status
 		else
-			echo -e "\n$GREEN[$RED!$GREEN] $RED AnonSurf is not running!$RESETCOLOR\n"
+			echo -e "\n$GREEN[$RED!$GREEN] $RED Anonymous mode is not running!$RESETCOLOR\n"
 		fi
 	;;
 	myip|ip)
@@ -174,7 +172,7 @@ case "$1" in
 		if [ "$(service anonsurfd status | grep Active | awk '{print $2}')" = "active" ]; then
 			/usr/sbin/service anonsurfd restart
 		else
-			echo -e "\n$GREEN[$RED!$GREEN] $RED AnonSurf is not running! Can't restart service!$RESETCOLOR\n" >&2
+			echo -e "\n$GREEN[$RED!$GREEN] $RED Anonymous mode is not running! Can't restart service!$RESETCOLOR\n" >&2
 		fi
 	;;
 	enable-boot)
@@ -191,31 +189,22 @@ case "$1" in
    *)
 
 echo -e "
-AnonSurf [v2.13.9] -$BLUE Command Line Interface$RESETCOLOR
-
- $RED Developed$RESETCOLOR by$GREEN Lorenzo \"Palinuro\" Faletra$BLUE <palinuro@parrotsec.org>$RESETCOLOR
-   $GREEN Lisetta \"Sheireen\" Ferrero$BLUE <sheireen@parrotsec.org>$RESETCOLOR
-   $GREEN Francesco \"Mibofra\" Bonanno$BLUE <mibofra@parrotsec.org>$RESETCOLOR
- $RED Maintained$RESETCOLOR by$GREEN Nong Hoang \"DmKnght\" Tu$BLUE <dmknght@parrotsec.org>$RESETCOLOR
-    and a huge amount of Caffeine, Mountain Dew + some GNU/GPL v3 stuff
-  Extended by Daniel \"Sawyer\" Garcia <dagaba13@gmail.com>
-
+$BLUE Anonymous mode command Line Interface$RESETCOLOR
   Usage:
   $RED┌──[$GREEN$USER$YELLOW@$BLUE`hostname`$RED]─[$GREEN$PWD$RED]
-  $RED└──╼ \$$GREEN"" anonsurf $RED{$GREEN""start$RED|$GREEN""stop$RED|$GREEN""restart$RED|$GREEN""enable-boot$RED|$GREEN""disable-boot$RED|$GREEN""change$RED""$RED|$GREEN""status$RED""}
+  $RED└──╼ \$$GREEN"" exit_node_handling.sh $RED{$GREEN""start$RED|$GREEN""stop$RED|$GREEN""restart$RED|$GREEN""enable-boot$RED|$GREEN""disable-boot$RED|$GREEN""change$RED""$RED|$GREEN""status$RED""}
 
-  $RED start$BLUE -$GREEN Start system-wide Tor tunnel
-  $RED stop$BLUE -$GREEN Stop AnonSurf and return to clearnet
-  $RED restart$BLUE -$GREEN Restart AnonSurf daemon and Tor service
-  $RED enable-boot$BLUE -$GREEN Enable AnonSurf at boot
-  $RED disable-boot$BLUE -$GREEN Disable AnonSurf at boot
-  $RED status-boot$BLUE -$GREEN Show if AnonSurf is enabled at boot
-  $RED changeid$BLUE -$GREEN Auto change your identify on Tor network
-  $RED status$BLUE -$GREEN Check if AnonSurf is working properly
-  $RED myip$BLUE -$GREEN Check your IP address and verify your Tor connection
+  $RED start$BLUE -$GREEN Start system-wide tor tunnel
+  $RED stop$BLUE -$GREEN Stop anonymous mode and return to clearnet
+  $RED restart$BLUE -$GREEN Restart anonymous mode daemon and tor service
+  $RED enable-boot$BLUE -$GREEN Enable anonymous mode at boot
+  $RED disable-boot$BLUE -$GREEN Disable anonymous mode at boot
+  $RED status-boot$BLUE -$GREEN Show if anonymous mode is enabled at boot
+  $RED changeid$BLUE -$GREEN Auto change your identify on tor network
+  $RED status$BLUE -$GREEN Check if anonymous mode is working properly
+  $RED myip$BLUE -$GREEN Check your IP address and verify your tor connection
   $RED dns$BLUE -$GREEN Fast set / fix DNS. Please use /usr/bin/dnstool.
 $RESETCOLOR
-Dance like no one's watching. Encrypt like everyone is.
 " >&2
 
 exit 1
