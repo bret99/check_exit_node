@@ -7,7 +7,7 @@ export RESETCOLOR='\033[1;00m'
 
 function notify {
 	if [ -e /usr/bin/notify-send ]; then
-		/usr/bin/notify-send "AnonSurf" "$1"
+		/usr/bin/notify-send "Network message" "$1"
 	fi
 }
 export notify
