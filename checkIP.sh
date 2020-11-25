@@ -15,7 +15,7 @@ notify2 (){
 export notify2
 
 checkIP (){
-	DATA='curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/'
+	DATA=`curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/`
         IP=$(curl ifconfig.me)
         countryToFind=`whois $IP|grep ountry|sed 's/country://; s/Country://'|head -n 1`                                                          
         flagToFind=`echo $countryToFind|sed -e 's/\(.*\)/\L\1/'`   
@@ -27,13 +27,11 @@ checkIP (){
         elif [ "$DATA" != "" ] && [ "$countryToFind" != "" ]; then 
                 countryFlag=/usr/share/icons/mate/scalable/animations/$flagToShow 
                 notify2 $countryToFind $countryFlag "You are connected to Tor network\n\n$MYIP\npublic IP:\t$IP"
-	else
-		if [ "$IP" == "" ]; then
-			notify "Can't connect to internet\nPlease check your settings"
-		else
-                    countryFlag=/usr/share/icons/mate/scalable/animations/$flagToShow 
-                    notify2 $countryToFind $countryFlag "You are NOT connected to Tor network\n\n$MYIP\npublic IP:\t$IP" 
-		fi
+	elif [ "$IP" == "" ]; then
+		notify "Can't connect to internet\nPlease check your settings"
+        elif [ "$DATA" == "" ]; then 
+                countryFlag=/usr/share/icons/mate/scalable/animations/$flagToShow 
+                notify2 $countryToFind $countryFlag "You are NOT connected to Tor network\n\n$MYIP\npublic IP:\t$IP" 
 	fi
 }
 
