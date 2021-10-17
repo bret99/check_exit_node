@@ -1,5 +1,3 @@
-#!/bin/python3
-
 import os
 
 file1 = "/etc/tor/torrc"
