@@ -25,12 +25,12 @@ checkIP (){
         if [ "$DATA" != "" ] && [ "$countryToFind" == "" ]; then 
                 notify "You are connected to Tor network\n$MYIP\npublic IP:\t$IP"
         elif [ "$DATA" != "" ] && [ "$countryToFind" != "" ]; then 
-                countryFlag=/PATH_TO_FLAGS_DIR/$flagToShow 
+                countryFlag=PATH_TO_FLAGS_DIR/$flagToShow 
                 notify2 $countryToFind $countryFlag "You are connected to Tor network\n\n$MYIP\npublic IP:\t$IP"
 	elif [ "$IP" == "" ]; then
 		notify "Can't connect to internet\nPlease check your settings"
         elif [ "$DATA" == "" ]; then 
-                countryFlag=/PATH_TO_FLAGS_DIR/$flagToShow 
+                countryFlag=PATH_TO_FLAGS_DIR/$flagToShow 
                 notify2 $countryToFind $countryFlag "You are NOT connected to Tor network\n\n$MYIP\npublic IP:\t$IP" 
 	fi
 }
