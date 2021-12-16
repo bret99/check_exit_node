@@ -1,4 +1,5 @@
 check_public_IP.sh is to get user public IP, check_tor_exit_node.sh is to get tor exit node.
+
 check_tor_exit_node.sh should be run after 'sudo service tor start'.
 
 Prerequisites:
