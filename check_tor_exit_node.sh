@@ -19,18 +19,18 @@ checkIP (){
         IP=$(proxychains4 curl ifconfig.me)
         countryToFind=`whois $IP|grep ountry|sed 's/country://; s/Country://'|head -n 1`                                                          
         flagToFind=`echo $countryToFind|sed -e 's/\(.*\)/\L\1/'`   
-        flagToShow=`cd /usr/share/icons/mate/scalable/animations/;ls|grep $flagToFind`
+        flagToShow=`cd /PATH_TO_FLAGS_DIR/;ls|grep $flagToFind`
         MYIP=`whois $IP|grep -E -i "country|city|address|organization|descr"|sort --unique | tail -n 10`
         
         if [ "$DATA" != "" ] && [ "$countryToFind" == "" ]; then 
                 notify "You are connected to Tor network\n$MYIP\npublic IP:\t$IP"
         elif [ "$DATA" != "" ] && [ "$countryToFind" != "" ]; then 
-                countryFlag=/usr/share/icons/mate/scalable/animations/$flagToShow 
+                countryFlag=/PATH_TO_FLAGS_DIR/$flagToShow 
                 notify2 $countryToFind $countryFlag "You are connected to Tor network\n\n$MYIP\npublic IP:\t$IP"
         elif [ "$IP" == "" ]; then
 		notify "Can't connect to Tor\nPlease check your settings"
 	elif [ "$DATA" == "" ]; then
-                countryFlag=/usr/share/icons/mate/scalable/animations/$flagToShow 
+                countryFlag=/PATH_TO_FLAGS_DIR/$flagToShow 
                 notify2 $countryToFind $countryFlag "You are NOT connected to Tor network\n\n$MYIP\npublic IP:\t$IP" 
 	fi
 }
