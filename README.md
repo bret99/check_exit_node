@@ -5,5 +5,5 @@ check_tor_exit_node.sh should be run after 'sudo service tor start'.
 Prerequisites:
 
 1.install notify-send;
-
-2.one should install country flags and insert the path to flags directory in lines 22,28,33.
+2.install proxychains4;
+3.one should install country flags and insert the path to flags directory in lines 22,28,33.
