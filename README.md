@@ -11,3 +11,5 @@ Prerequisites:
 3.install whois;
 
 4.one should install country flags and insert the path to flags directory in lines 22,28,33.
+
+Sometimes requests to ifconfig.me is blocked; one may substitute ifconfig.me to ip.me in line 19 in both files.
