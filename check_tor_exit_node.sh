@@ -22,12 +22,12 @@ checkIP (){
         
         if [ "$DATA" != "" ] && [ "$countryToFind" == "" ]; then 
 #                notify "You are connected to Tor network\npublic IP:\t$IP\n$MYIP"
-                zenity --info --title "You are NOT connected to Tor network" --text "public IP:\t$IP\n$MYIP"
+                zenity --info --title "You are connected to Tor network" --text "public IP:\t$IP\n$MYIP"
         elif [ "$DATA" != "" ] && [ "$countryToFind" != "" ]; then 
                 countryFlag=/usr/share/iso-country-flags/64/$flagToShow 
                 zenity --window-icon $countryFlag --info --title "You are connected to Tor network" --text "public IP:\t$IP\n$MYIP"
 #                notify2 $countryToFind $countryFlag "You are connected to Tor network\npublic IP:\t$IP\n$MYIP"
-        elif [ "$IP" == "" ]; then
+        elif [ "$(curl ip.me)" == "" ]; then
 		notify "Can't connect to internet\nPlease check your settings"
 	elif [ "$DATA" == "" ]; then
                 countryFlag=/usr/share/iso-country-flags/64/$flagToShow 
