@@ -14,7 +14,7 @@ export notify2
 
 checkIP (){
 	DATA=`curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/`
-        IP=$(curl ip.me)
+        IP=$(proxychains4 curl ip.me)
         countryToFind=`whois $IP | grep country -i -m 1 |cut -d ':' -f 2 | xargs`                                                          
         flagToFind=`echo $countryToFind|sed -e 's/\(.*\)/\L\1/'`   
         flagToShow=`cd /usr/share/iso-country-flags/64/;ls|grep -i $flagToFind`
