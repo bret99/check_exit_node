@@ -37,9 +37,6 @@ checkIP (){
                 countryFlag=/usr/share/iso-country-flags/64/$flagToShow 
 #                notify2 $countryToFind $countryFlag "You are not connected to Tor network\npublic IP:\t$PUBLIC_IP\n$MYIP"
                 zenity --window-icon $countryFlag --info --title "You are not connected to Tor network" --text "public IP:\t$PUBLIC_IP\n$MYIP"
-                if [ "$PUBLIC_IP" == "" ]; then
-                    zenity --info --title "You are connected to Tor network" --text "Can't connect to internet\nPlease check your settings"
-                fi
         fi
 }
 
