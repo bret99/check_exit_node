@@ -14,26 +14,33 @@ export notify2
 
 checkIP (){
 	DATA=`curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/`
-        IP=$(curl ip.me)
+        IP=$(proxychains4 curl ip.me)
         countryToFind=`whois $IP | grep country -i -m 1 |cut -d ':' -f 2 | xargs`                                                          
         flagToFind=`echo $countryToFind|sed -e 's/\(.*\)/\L\1/'`   
         flagToShow=`cd /usr/share/iso-country-flags/64/;ls|grep -i $flagToFind`
         MYIP=`whois $IP|grep -E -i "country|city|address|organization|descr"|sort --unique | tail -n 10`
         
         if [ "$DATA" != "" ] && [ "$countryToFind" == "" ]; then 
-#                notify "You are connected to Tor network\npublic IP:\t$IP\n$MYIP"
-                zenity --info --title "You are connected to Tor network" --text "public IP:\t$IP\n$MYIP"
+#                notify "You are connected to Tor network\nTor exit node IP:\t$IP\n$MYIP"
+                zenity --info --title "You are connected to Tor network" --text "Tor exit node IP:\t$IP\n$MYIP"
         elif [ "$DATA" != "" ] && [ "$countryToFind" != "" ]; then 
                 countryFlag=/usr/share/iso-country-flags/64/$flagToShow 
-                zenity --window-icon $countryFlag --info --title "You are connected to Tor network" --text "public IP:\t$IP\n$MYIP"
-#                notify2 $countryToFind $countryFlag "You are connected to Tor network\npublic IP:\t$IP\n$MYIP"
-        elif [ "$IP" == "" ]; then
-		notify "Can't connect to internet\nPlease check your settings"
+                zenity --window-icon $countryFlag --info --title "You are connected to Tor network" --text "Tor exit node IP:\t$IP\n$MYIP"
+#                notify2 $countryToFind $countryFlag "You are connected to Tor network\nTor exit node IP:\t$IP\n$MYIP"
 	elif [ "$DATA" == "" ]; then
                 countryFlag=/usr/share/iso-country-flags/64/$flagToShow 
-#                notify2 $countryToFind $countryFlag "You are not connected to Tor network\npublic IP:\t$IP\n$MYIP"
-                zenity --window-icon $countryFlag --info --title "You are not connected to Tor network" --text "public IP:\t$IP\n$MYIP"
-	fi
+                PUBLIC_IP=$(curl ip.me)
+                countryToFind=`whois $PUBLIC_IP | grep country -i -m 1 |cut -d ':' -f 2 | xargs`                                                          
+                flagToFind=`echo $countryToFind|sed -e 's/\(.*\)/\L\1/'`   
+                flagToShow=`cd /usr/share/iso-country-flags/64/;ls|grep -i $flagToFind`
+                MYIP=`whois $PUBLIC_IP|grep -E -i "country|city|address|organization|descr"|sort --unique | tail -n 10`
+                countryFlag=/usr/share/iso-country-flags/64/$flagToShow 
+#                notify2 $countryToFind $countryFlag "You are not connected to Tor network\npublic IP:\t$PUBLIC_IP\n$MYIP"
+                zenity --window-icon $countryFlag --info --title "You are not connected to Tor network" --text "public IP:\t$PUBLIC_IP\n$MYIP"
+                if [ "$PUBLIC_IP" == "" ]; then
+                    zenity --info --title "You are connected to Tor network" --text "Can't connect to internet\nPlease check your settings"
+                fi
+        fi
 }
 
 checkIP
